@@ -50,6 +50,8 @@ class GlobalController extends GetxController {
       _lattitude.value = value.latitude;
       _longitude.value = value.longitude;
       _isLoading.value = false;
+      print(_lattitude.value);
+      print(_longitude.value);
     });
   }
 }
