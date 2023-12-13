@@ -1,109 +1,101 @@
-import 'dart:convert';
+// instance for getting the api response
+class WeatherDataCurrent {
+  final Current current;
+  WeatherDataCurrent({required this.current});
+
+  factory WeatherDataCurrent.fromJson(Map<String, dynamic> json) =>
+      WeatherDataCurrent(current: Current.fromJson(json["current"]));
+}
 
 class Current {
-  String time;
-  int interval;
-  double temperature2M;
-  double windSpeed10M;
+  int? dt;
+  int? sunrise;
+  int? sunset;
+  double? temp;
+  double? feelsLike;
+  int? pressure;
+  int? humidity;
+  double? dewPoint;
+  int? uvi;
+  int? clouds;
+  int? visibility;
+  double? windSpeed;
+  int? windDeg;
+  List<Weather>? weather;
 
   Current({
-    required this.time,
-    required this.interval,
-    required this.temperature2M,
-    required this.windSpeed10M,
+    this.dt,
+    this.sunrise,
+    this.sunset,
+    this.temp,
+    this.feelsLike,
+    this.pressure,
+    this.humidity,
+    this.dewPoint,
+    this.uvi,
+    this.clouds,
+    this.visibility,
+    this.windSpeed,
+    this.windDeg,
+    this.weather,
   });
 
   factory Current.fromJson(Map<String, dynamic> json) => Current(
-        time: json["time"],
-        interval: json["interval"],
-        temperature2M: json["temperature_2m"]?.toDouble(),
-        windSpeed10M: json["wind_speed_10m"]?.toDouble(),
+        dt: json['dt'] as int?,
+        sunrise: json['sunrise'] as int?,
+        sunset: json['sunset'] as int?,
+        temp: (json['temp'] as num?)?.toDouble(),
+        feelsLike: (json['feels_like'] as num?)?.toDouble(),
+        pressure: json['pressure'] as int?,
+        humidity: json['humidity'] as int?,
+        dewPoint: (json['dew_point'] as num?)?.toDouble(),
+        uvi: json['uvi'] as int?,
+        clouds: json['clouds'] as int?,
+        visibility: json['visibility'] as int?,
+        windSpeed: (json['wind_speed'] as num?)?.toDouble(),
+        windDeg: json['wind_deg'] as int?,
+        weather: (json['weather'] as List<dynamic>?)
+            ?.map((e) => Weather.fromJson(e as Map<String, dynamic>))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
-        "time": time,
-        "interval": interval,
-        "temperature_2m": temperature2M,
-        "wind_speed_10m": windSpeed10M,
+        'dt': dt,
+        'sunrise': sunrise,
+        'sunset': sunset,
+        'temp': temp,
+        'feels_like': feelsLike,
+        'pressure': pressure,
+        'humidity': humidity,
+        'dew_point': dewPoint,
+        'uvi': uvi,
+        'clouds': clouds,
+        'visibility': visibility,
+        'wind_speed': windSpeed,
+        'wind_deg': windDeg,
+        'weather': weather?.map((e) => e.toJson()).toList(),
       };
 }
 
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
+class Weather {
+  int? id;
+  String? main;
+  String? description;
+  String? icon;
 
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
+  Weather({this.id, this.main, this.description, this.icon});
 
-class Welcome {
-  double latitude;
-  double longitude;
-  double generationtimeMs;
-  int utcOffsetSeconds;
-  String timezone;
-  String timezoneAbbreviation;
-  int elevation;
-  CurrentUnits currentUnits;
-  Current current;
-
-  Welcome({
-    required this.latitude,
-    required this.longitude,
-    required this.generationtimeMs,
-    required this.utcOffsetSeconds,
-    required this.timezone,
-    required this.timezoneAbbreviation,
-    required this.elevation,
-    required this.currentUnits,
-    required this.current,
-  });
-
-  factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        latitude: json["latitude"]?.toDouble(),
-        longitude: json["longitude"]?.toDouble(),
-        generationtimeMs: json["generationtime_ms"]?.toDouble(),
-        utcOffsetSeconds: json["utc_offset_seconds"],
-        timezone: json["timezone"],
-        timezoneAbbreviation: json["timezone_abbreviation"],
-        elevation: json["elevation"],
-        currentUnits: CurrentUnits.fromJson(json["current_units"]),
-        current: Current.fromJson(json["current"]),
+  factory Weather.fromJson(Map<String, dynamic> json) => Weather(
+        id: json['id'] as int?,
+        main: json['main'] as String?,
+        description: json['description'] as String?,
+        icon: json['icon'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-        "generationtime_ms": generationtimeMs,
-        "utc_offset_seconds": utcOffsetSeconds,
-        "timezone": timezone,
-        "timezone_abbreviation": timezoneAbbreviation,
-        "elevation": elevation,
-        "current_units": currentUnits.toJson(),
-        "current": current.toJson(),
-      };
-}
-
-class CurrentUnits {
-  String time;
-  String interval;
-  String temperature2M;
-  String windSpeed10M;
-
-  CurrentUnits({
-    required this.time,
-    required this.interval,
-    required this.temperature2M,
-    required this.windSpeed10M,
-  });
-
-  factory CurrentUnits.fromJson(Map<String, dynamic> json) => CurrentUnits(
-        time: json["time"],
-        interval: json["interval"],
-        temperature2M: json["temperature_2m"],
-        windSpeed10M: json["wind_speed_10m"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "time": time,
-        "interval": interval,
-        "temperature_2m": temperature2M,
-        "wind_speed_10m": windSpeed10M,
+        'id': id,
+        'main': main,
+        'description': description,
+        'icon': icon,
       };
 }

@@ -1,56 +1,63 @@
-import 'dart:convert';
+import 'alert.dart';
+import 'current.dart';
+import 'daily.dart';
+import 'hourly.dart';
+import 'minutely.dart';
 
-import 'package:weather_app_1/model/weather/current.dart';
-import 'package:weather_app_1/model/weather/current_units.dart';
+class Weather {
+  double? lat;
+  double? lon;
+  String? timezone;
+  int? timezoneOffset;
+  Current? current;
+  List<Minutely>? minutely;
+  List<Hourly>? hourly;
+  List<Daily>? daily;
+  List<Alert>? alerts;
 
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
-
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
-
-class Welcome {
-  double latitude;
-  double longitude;
-  double generationtimeMs;
-  int utcOffsetSeconds;
-  String timezone;
-  String timezoneAbbreviation;
-  int elevation;
-  CurrentUnits currentUnits;
-  Current current;
-
-  Welcome({
-    required this.latitude,
-    required this.longitude,
-    required this.generationtimeMs,
-    required this.utcOffsetSeconds,
-    required this.timezone,
-    required this.timezoneAbbreviation,
-    required this.elevation,
-    required this.currentUnits,
-    required this.current,
+  Weather({
+    this.lat,
+    this.lon,
+    this.timezone,
+    this.timezoneOffset,
+    this.current,
+    this.minutely,
+    this.hourly,
+    this.daily,
+    this.alerts,
   });
 
-  factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        latitude: json["latitude"]?.toDouble(),
-        longitude: json["longitude"]?.toDouble(),
-        generationtimeMs: json["generationtime_ms"]?.toDouble(),
-        utcOffsetSeconds: json["utc_offset_seconds"],
-        timezone: json["timezone"],
-        timezoneAbbreviation: json["timezone_abbreviation"],
-        elevation: json["elevation"],
-        currentUnits: CurrentUnits.fromJson(json["current_units"]),
-        current: Current.fromJson(json["current"]),
+  factory Weather.fromJson(Map<String, dynamic> json) => Weather(
+        lat: (json['lat'] as num?)?.toDouble(),
+        lon: (json['lon'] as num?)?.toDouble(),
+        timezone: json['timezone'] as String?,
+        timezoneOffset: json['timezone_offset'] as int?,
+        current: json['current'] == null
+            ? null
+            : Current.fromJson(json['current'] as Map<String, dynamic>),
+        minutely: (json['minutely'] as List<dynamic>?)
+            ?.map((e) => Minutely.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        hourly: (json['hourly'] as List<dynamic>?)
+            ?.map((e) => Hourly.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        daily: (json['daily'] as List<dynamic>?)
+            ?.map((e) => Daily.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        alerts: (json['alerts'] as List<dynamic>?)
+            ?.map((e) => Alert.fromJson(e as Map<String, dynamic>))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-        "generationtime_ms": generationtimeMs,
-        "utc_offset_seconds": utcOffsetSeconds,
-        "timezone": timezone,
-        "timezone_abbreviation": timezoneAbbreviation,
-        "elevation": elevation,
-        "current_units": currentUnits.toJson(),
-        "current": current.toJson(),
+        'lat': lat,
+        'lon': lon,
+        'timezone': timezone,
+        'timezone_offset': timezoneOffset,
+        'current': current?.toJson(),
+        'minutely': minutely?.map((e) => e.toJson()).toList(),
+        'hourly': hourly?.map((e) => e.toJson()).toList(),
+        'daily': daily?.map((e) => e.toJson()).toList(),
+        'alerts': alerts?.map((e) => e.toJson()).toList(),
       };
 }
