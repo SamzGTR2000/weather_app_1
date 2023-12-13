@@ -15,6 +15,9 @@ class GlobalController extends GetxController {
   RxDouble getLongitude() => _longitude;
 
   final weatherData = WeatherData().obs;
+  WeatherData getWeatherData() {
+    return weatherData.value;
+  }
 
   @override
   void onInit() {
@@ -53,6 +56,8 @@ class GlobalController extends GetxController {
       // update our lattitude and longitude
       _lattitude.value = value.latitude;
       _longitude.value = value.longitude;
+      // print(_lattitude.value);
+      // print(_longitude.value);
       // Calling the weather api
       return FetchWeatherApi()
           .processData(value.latitude, value.longitude)

@@ -11,7 +11,7 @@ class Current {
   int? dt;
   int? sunrise;
   int? sunset;
-  double? temp;
+  int? temp;
   double? feelsLike;
   int? pressure;
   int? humidity;
@@ -44,7 +44,7 @@ class Current {
         dt: json['dt'] as int?,
         sunrise: json['sunrise'] as int?,
         sunset: json['sunset'] as int?,
-        temp: (json['temp'] as num?)?.toDouble(),
+        temp: (json['temp'] as num?)?.round(),
         feelsLike: (json['feels_like'] as num?)?.toDouble(),
         pressure: json['pressure'] as int?,
         humidity: json['humidity'] as int?,

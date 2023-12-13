@@ -12,7 +12,7 @@ class HeaderWidget extends StatefulWidget {
 }
 
 class _HeaderWidgetState extends State<HeaderWidget> {
-  String city = "test";
+  String city = "";
   String date = DateFormat("yMMMMd").format(DateTime.now());
 
   final GlobalController globalController =
